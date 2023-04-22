@@ -1,1 +1,78 @@
-<p>header works!</p>
+
+<nav class=" navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img src="https://is.vnecdn.net/v468/82/01/93/3930182/assets/images/icon01.png"
+           class="card-img-top rounded-circle" style="height: 60px"/>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="navbar-brand" href="#">
+            <img src="https://is.vnecdn.net/v468/82/01/93/3930182/assets/images/title02.png"
+                 class="card-img-top rounded-circle" style="height: 60px"/>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+             aria-expanded="false"> <img
+            src="https://www.vinamilk.com.vn/sua-tuoi-vinamilk/wp-content/uploads/2016/06/home_active.png"
+          >
+            Trang chủ
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+             aria-expanded="false">
+            <img src="https://www.vinamilk.com.vn/sua-tuoi-vinamilk/wp-content/uploads/2016/06/cow_active.png"
+            >
+            Trang Trại chuẩn quốc tế
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+             aria-expanded="false">
+            <img src="https://www.vinamilk.com.vn/sua-tuoi-vinamilk/wp-content/uploads/2016/09/gift_active.png"
+                 style=" height: 20px">
+            Sản phẩm
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#"><span >
+                            <img style="color: #00aced" src="https://img.icons8.com/ios-glyphs/1x/favorite-cart.png">
+                        Giỏ hàng</span></a>
+        </li>
+        <div class="col-6" style="margin-right: 30px">
+          <div class="nav-item dropdown " [hidden]="!isLoggedIn">
+            <p class="nav-link dropdown-toggle " data-bs-toggle="dropdown">{{name}}</p>
+            <div class="dropdown-menu bg-light rounded-0 rounded-bottom m-0">
+              <p class="dropdown-item">Đổi mật khẩu</p>
+              <button class="dropdown-item" (click)="logOut()">Đăng xuất</button>
+            </div>
+          </div>
+        </div>
+
+      </ul>
+    </div>
+  </div>
+</nav>
