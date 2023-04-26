@@ -1,7 +1,8 @@
-package com.example.be.config;
+package com.example.cow_farm.config;
 
-import com.example.be.jwt.JwtFilter;
-import com.example.be.service.Impl.AccountDetailService;
+
+import com.example.cow_farm.jwt.JwtFilter;
+import com.example.cow_farm.serivce.impl.AccountDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,20 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/**")
                 .permitAll()
                 .antMatchers("/**/**").hasRole("ADMIN")
-//                .antMatchers("/api/answers/**").hasAnyRole( "STUDENT","TEACHER")
-//                .antMatchers("/clazz/**").hasAnyRole( "STUDENT", "TEACHER")
-//                .antMatchers("/api/document/**").hasAnyRole( "STUDENT", "TEACHER")
-//                .antMatchers("/file/**").hasAnyRole( "STUDENT","TEACHER")
-//                .antMatchers("/api/notification-teachers/**").hasAnyRole( "STUDENT", "TEACHER")
-//                .antMatchers("/api/progress-reports/**").hasAnyRole( "STUDENT", "TEACHER")
-//                .antMatchers("/api/progress/**").hasAnyRole( "STUDENT", "TEACHER")
-//                .antMatchers("/api/progressReview/**").hasAnyRole( "STUDENT", "TEACHER")
-//                .antMatchers("/api/projects/**").hasAnyRole( "STUDENT", "TEACHER")
-//                .antMatchers("/api/questions/**").hasAnyRole( "STUDENT", "TEACHER")
-//                .antMatchers("/api/studentProgressReport/**").hasAnyRole( "STUDENT", "TEACHER")
-                .antMatchers("/api/students/**").hasAnyRole( "STUDENT", "TEACHER","ADMIN")
-//                .antMatchers("/api/teachers/**").hasAnyRole( "STUDENT", "TEACHER")
-//                .antMatchers("/api/teams/**").hasAnyRole( "STUDENT", "TEACHER")
+                .antMatchers("/api/students/**").hasAnyRole( "USER","ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

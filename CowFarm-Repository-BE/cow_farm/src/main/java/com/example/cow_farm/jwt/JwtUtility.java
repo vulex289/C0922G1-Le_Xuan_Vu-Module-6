@@ -1,10 +1,10 @@
-package com.example.be.jwt;
+package com.example.cow_farm.jwt;
 
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import java.io.Serializable;
+
 import java.util.Date;
 /**
  * Created by: Phạm Tiến

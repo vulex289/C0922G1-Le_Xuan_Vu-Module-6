@@ -1,9 +1,5 @@
-package com.example.be.payload.request;
-/**
- * Created by: Phạm Tiến
- * Date: 29/03/2023
- * Class: LoginRequest
- */
+package com.example.cow_farm.payload.request;
+
 public class LoginRequest {
 
     private String username;

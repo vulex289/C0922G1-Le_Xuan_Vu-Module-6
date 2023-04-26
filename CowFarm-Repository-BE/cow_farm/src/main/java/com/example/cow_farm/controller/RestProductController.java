@@ -17,7 +17,7 @@ import java.util.List;
 public class RestProductController {
     @Autowired
     private IProductService productService;
-    @GetMapping("/product/list")
+    @GetMapping("api/product/list")
     public ResponseEntity<List<Product>>findAll(){
         List<Product>products = productService.findAll();
         if (products.isEmpty()){

@@ -1,12 +1,8 @@
-package com.example.be.payload.response;
+package com.example.cow_farm.payload.response;
 
 import java.util.List;
 
-/**
- * Created by: Phạm Tiến
- * Date: 29/03/2023
- * Class: JwtResponse
- */
+
 public class JwtResponse {
 
     private String token;
