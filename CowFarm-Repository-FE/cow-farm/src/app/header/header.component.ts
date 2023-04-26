@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ShareService} from '../service/share.service';
 import {TokenStorageService} from '../service/token-storage.service';
 import Swal from 'sweetalert2';
+import {AccountService} from '../service/account.service';
 
 @Component({
   selector: 'app-header',
@@ -16,7 +17,8 @@ export class HeaderComponent implements OnInit {
   isLoggedIn = false;
 
   constructor(private tokenStorageService: TokenStorageService,
-              private shareService: ShareService) {
+              private shareService: ShareService,
+              private accountService: AccountService) {
     this.shareService.getClickEvent().subscribe(() => {
       this.loadHeader();
     });
@@ -32,36 +34,18 @@ export class HeaderComponent implements OnInit {
       this.username = this.tokenStorageService.getUser().username;
     }
     this.isLoggedIn = this.username != null;
-    // this.findNameUser();
+    this.findNameUser();
   }
 
-  // findNameUser(): void {
-  //   if (this.role === 'ROLE_ADMIN' || this.role === 'ROLE_TEACHER') {
-  //     this.accountService.findNameByEmail(this.username).subscribe(next => {
-  //       this.name = next.teacherName;
-  //       this.img = next.teacherImg;
-  //     });
-  //   }
-  //   }
+  findNameUser(): void {
+      this.accountService.findUserEmail(this.username).subscribe(next => {
+        this.name = next.name;
+        this.img = next.avatar;
+      });
+    }
 
   logOut() {
-    console.log(this.isLoggedIn + 'aaa');
     this.tokenStorageService.signOut();
-    this.isLoggedIn = false;
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer);
-        toast.addEventListener('mouseleave', Swal.resumeTimer);
-      }
-    });
-    Toast.fire({
-      icon: 'error',
-      title: 'Tên đăng nhập hoặc mật khẩu không đúng'
-    });
+    this.ngOnInit();
   }
 }

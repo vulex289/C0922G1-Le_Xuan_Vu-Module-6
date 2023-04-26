@@ -23,7 +23,7 @@ export class Http403Interceptor implements HttpInterceptor {
           // Redirect to a 403 error page or login page, or display a notification
           this.router.navigateByUrl('login');
         } else if (error.status === 403 && this.tokenStorageService.isLogger()) {
-          this.router.navigateByUrl('error-page/error');
+          this.router.navigateByUrl('error');
         }
         return throwError(error);
       })
