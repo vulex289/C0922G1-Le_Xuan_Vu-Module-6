@@ -9,17 +9,27 @@ import {Product} from '../model/product';
 })
 export class ProductComponent implements OnInit {
   products: Product[];
+  nameSearch: '';
 
   constructor(private productService: ProductService) {
+
   }
 
   ngOnInit(): void {
+    if (this.nameSearch === undefined){
+      this.nameSearch = '';
+    }
+    console.log('nameSearch' + this.nameSearch);
     this.findAll();
   }
 
   findAll() {
-    this.productService.findAll().subscribe(next => {
+    this.productService.findAllByName(this.nameSearch).subscribe(next => {
       this.products = next;
     });
+  }
+
+  search() {
+    this.ngOnInit();
   }
 }
