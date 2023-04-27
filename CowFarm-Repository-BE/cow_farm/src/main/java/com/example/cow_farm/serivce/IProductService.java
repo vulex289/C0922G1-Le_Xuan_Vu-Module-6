@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IProductService {
     List<Product> findAll();
+    List<Product> findAllByName(String nameSearch);
 }
