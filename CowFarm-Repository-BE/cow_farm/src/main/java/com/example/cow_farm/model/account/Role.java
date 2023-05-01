@@ -1,6 +1,6 @@
 package com.example.cow_farm.model.account;
 
-import com.example.cow_farm.model.account.AccountRole;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;

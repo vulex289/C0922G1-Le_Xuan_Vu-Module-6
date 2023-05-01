@@ -25,6 +25,10 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "product_type_id", referencedColumnName = "product_type_id")
     private ProductType productType;
+
+    @ManyToOne
+    @JoinColumn(name = "product_unit_id", referencedColumnName = "product_unit_id")
+    private ProductUnit productUnit;
     @OneToMany(mappedBy = "product")
     @JsonBackReference
     private Set<CartDetail>orderDetails;
@@ -34,6 +38,14 @@ public class Product {
 
     public Set<CartDetail> getOrderDetails() {
         return orderDetails;
+    }
+
+    public ProductUnit getProductUnit() {
+        return productUnit;
+    }
+
+    public void setProductUnit(ProductUnit productUnit) {
+        this.productUnit = productUnit;
     }
 
     public void setOrderDetails(Set<CartDetail> orderDetails) {

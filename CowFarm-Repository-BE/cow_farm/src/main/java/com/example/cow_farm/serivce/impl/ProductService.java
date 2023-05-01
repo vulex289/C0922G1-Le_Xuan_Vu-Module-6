@@ -21,4 +21,9 @@ public class ProductService implements IProductService {
     public List<Product> findAllByName(String nameSearch) {
         return this.productRepository.findAllByName(nameSearch);
     }
+
+    @Override
+    public Product findById(Long productId) {
+        return productRepository.findById(productId).orElse(null);
+    }
 }

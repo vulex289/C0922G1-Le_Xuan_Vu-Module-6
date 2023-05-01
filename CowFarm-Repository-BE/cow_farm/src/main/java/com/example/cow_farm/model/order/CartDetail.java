@@ -4,6 +4,7 @@ import com.example.cow_farm.model.product.Product;
 
 import javax.persistence.*;
 
+
 @Entity
 public class CartDetail {
     @Id
