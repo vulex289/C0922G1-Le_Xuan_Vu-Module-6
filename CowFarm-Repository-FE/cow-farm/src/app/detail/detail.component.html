@@ -1,43 +1,104 @@
-<!-- Product Detail -->
-<div class="container">
-  <div class="box">
-    <div class="images">
-      <div class="img-holder active">
-        <img src="../../assets/img/gallery-4.jpg">
-      </div>
-      <div class="img-holder">
-        <img src="../../assets/img/gallery-4.jpg">
-      </div>
-      <div class="img-holder">
-        <img src="../../assets/img/headphone.jpg">
-      </div>
-      <div class="img-holder">
-        <img src="../../assets/img/headphone.jpg">
+<div class="row vu">
+<div class=" d-flex align-items-center justify-content-center shadow  mt-5  rounded w-75" style="margin-left: 170px; background: white">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="row mb-3">
+        <h1 class="text-center"><b><i><u>Product Detail</u></i></b></h1>
       </div>
     </div>
-    <div class="basic-info">
-      <h1>Ayrshire</h1>
-      <div class="rate">
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-      </div>
-      <span>$250</span>
-      <div class="type mx-4">
 
-        <button class="minus btn-outline-light" style="color: black" (click)="decrement()">-</button>
-        <input type="text" id="number" [(ngModel)]="num">
-        <button class="plus btn-outline-light" style="color: black" (click)="increment()">+</button>
+    <div class="row">
+      <div class="col-md-5">
+        <div class="row my-3">
+          <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item" *ngFor="let image of productDetail?.imageList; let i = index;"
+                   [class.active]="i === 0">
+                <a class="d-block" href="../../assets/img/{{image}}" data-lightbox="gallery">
+                  <img src="../../assets/img/{{image}}" class="d-block w-100" alt="" style="max-height: 300px">
+                </a>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade"
+                    data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade"
+                    data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+
+        </div>
       </div>
-      <div class="options">
-        <button class="btn btn-primary">Buy It Now</button>
-        <button class="btn btn-primary mx-2" >Add to Cart</button>
+
+      <div class="col-md-7">
+        <div class="row mx-5">
+          <h3><b>{{productDetail?.productName}}</b></h3>
+        </div>
+
+        <div class="row mx-5 mb-1">
+          <p><b>Type:</b> {{productDetail?.productType?.productTypeName}}</p>
+          <p><b>Unit:</b> {{productDetail?.productUnit?.name}}</p>
+          <p><b>Warehouse:</b> 77 (stocking)</p>
+        </div>
+
+        <div class="row mx-5 mb-1">
+      <span><b>Cost: </b><span class="text-danger">{{ productDetail?.price|currency: "USD"}}
+</span></span>
+        </div>
+
+        <div class="row mx-5 mb-1">
+          <span><b>Quantity</b></span>
+          <div class="my-3">
+               <button class="minus btn-outline-light" style="color: black" (click)="minus()">-</button>
+                <b class="mx-2">{{num}}</b>
+               <button class="plus btn-outline-light" style="color: black" (click)="plus()">+</button>
+            </div>
+        </div>
+
+        <div class="row mx-5 mb-3">
+          <b>Total: <span class="text-primary">{{total|currency: "USD"}}</span></b>
+        </div>
+
+        <div class="row mx-5">
+          <div class="col-lg-6">
+            <button class="btn btn-dark" (click)="addCart(productDetail.productId)"><span class="text-light">Add your cart</span></button>
+          </div>
+          <div class="col-lg-6">
+            <!--        <button class="btn btn-outline-primary">Tiếp tục mua hàng</button>-->
+          </div>
+        </div>
       </div>
     </div>
-    <div class="description">
-      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Natus temporibus corporis repudiandae, consectetur nostrum nisi commodi placeat rerum molestias numquam nihil accusantium deleniti! Enim, nesciunt a quis amet hic officia. Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae nemo accusantium tempora facere doloremque cum iusto, ut neque, fuga omnis libero laborum ullam. At dolorum qui atque labore illo dignissimos.</p>
+
+    <div class="row  mt-3" style="text-align: center">
+      <ul class="nav nav-tabs " style="text-align: center" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
+                  data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
+            <b>Description</b></button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
+                  type="button" role="tab" aria-controls="profile" aria-selected="false">
+            <b>Review</b></button>
+        </li>
+
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+          <p style="font-size: 18px;"><b>
+            {{productDetail?.description}}</b></p>
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+          ...
+        </div>
+      </div>
     </div>
   </div>
 </div>
+</div>
+<button (click)="onHead()" class="btn btn-lg btn-warning btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></button>

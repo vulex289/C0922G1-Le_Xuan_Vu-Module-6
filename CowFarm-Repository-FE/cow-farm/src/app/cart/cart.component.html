@@ -1,0 +1,108 @@
+ <div class="row container-fluid   mt-3 text-center">
+    <h1><b>YOUR CART</b></h1>
+  </div>
+
+<div class="row container-fluid">
+  <div class="col-lg-8">
+    <div class="row">
+      <div class="col-lg-6">
+        <a class="btn btn-outline-primary" routerLink="/product">Continue shopping</a>
+      </div>
+      <div class="col-lg-6"></div>
+    </div>
+    <div style="text-align: center" class="row">
+      <div class="row my-3 py-3" style="background: #eeeeee">
+        <div class="col-lg-2">
+          <b>Product</b>
+        </div>
+
+        <div class="col-lg-4"></div>
+
+        <div class="col-lg-2">
+          <b>Cost</b>
+        </div>
+
+        <div class="col-lg-2">
+          <b>Quantity</b>
+        </div>
+
+        <div class="col-lg-2">
+          <b>Notional Price</b>
+        </div>
+      </div>
+
+      <div class="row my-3" *ngFor="let s of cartDetailDtos">
+        <div class="col-lg-2">
+          <img class="img-fluid mb-4" src="../../assets/img/{{s.image}}"
+               style="width: 200px; height: 100px;" alt="">
+        </div>
+
+        <div class="col-lg-4" style="text-align: left">
+          <b>{{s.productName}}</b>
+        </div>
+
+        <div class="col-lg-2">
+          <b>{{s.price}}</b>
+        </div>
+
+        <div class="col-lg-2">
+          <div class="my-3">
+            <button class="minus btn-outline-light" style="color: black" (click)="minus()">-</button>
+            <b class="mx-2">{{num}}</b>
+            <button class="plus btn-outline-light" style="color: black" (click)="plus()">+</button>
+          </div>
+        </div>
+
+        <div class="col-lg-2">
+          <b>{{total}}</b>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!--    <div class="col-lg-1"></div>-->
+  <div class="col-lg-4 px-4 mt-4">
+    <div style="text-align: center">
+      <div class="row">
+        <h3><b>TOTAL PAYMENT</b></h3>
+        <hr style="height: 2px; color: black">
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6">
+          <b>Tổng số tiền: </b>
+        </div>
+        <div class="col-lg-6">
+          527.000đ
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6">
+          <b>Phí vận chuyển: </b>
+        </div>
+        <div class="col-lg-6">
+          30.000đ
+        </div>
+      </div>
+
+      <hr>
+      <div class="row">
+        <div class="col-lg-6">
+          <h5><b>Tổng thanh toán: </b></h5>
+        </div>
+
+        <div class="col-lg-6">
+          <b>557.000đ</b>
+        </div>
+        <div class="row">
+          <button class="btn btn-outline-success">Go to the payment page</button>
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -13,6 +13,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {ProductComponent} from './product/product.component';
 import {DetailComponent} from './detail/detail.component';
 import {FacebookLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
+import { CartComponent } from './cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {FacebookLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from 
     LoginComponent,
     ErrorComponent,
     ProductComponent,
-    DetailComponent
+    DetailComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,

@@ -6,18 +6,23 @@ import {ProductComponent} from './product/product.component';
 import {AdminGuard} from './security/admin.guard';
 import {ErrorComponent} from './error/error.component';
 import {DetailComponent} from './detail/detail.component';
+import {CartComponent} from './cart/cart.component';
 
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
   {path: 'login', component: LoginComponent},
   {
-    canActivate : [AdminGuard],
     path: 'product', component: ProductComponent
   },
   {path: 'error', component: ErrorComponent},
-  {path: 'detail', component: DetailComponent
-  }
+  {path: 'product-detail/:productId',
+  component: DetailComponent
+  },
+  {canActivate: [],
+    path: 'cart',
+  component: CartComponent
+  },
 ];
 
 @NgModule({

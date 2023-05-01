@@ -1,47 +1,47 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductService} from '../service/product.service';
-import {Product} from '../model/product';
-import {ViewportScroller} from '@angular/common';
 import {TokenStorageService} from '../service/token-storage.service';
 import {AccountService} from '../service/account.service';
 import Swal from 'sweetalert2';
+import {ViewportScroller} from '@angular/common';
+import {ICartDetailDto} from '../dto/icart-detail-dto';
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css']
+  selector: 'app-cart',
+  templateUrl: './cart.component.html',
+  styleUrls: ['./cart.component.css']
 })
-export class ProductComponent implements OnInit {
-  products: Product[];
-  nameSearch: '';
-  productId: number;
+export class CartComponent implements OnInit {
+  num = 1;
+  price: number;
+  total: number;
   username: string;
   accountId: number;
+  cartDetailDtos: ICartDetailDto[];
 
   constructor(private productService: ProductService,
-              private viewportScroller: ViewportScroller,
               private tokenStorageService: TokenStorageService,
-              private accountService: AccountService) {
-
+              private accountService: AccountService,
+              private viewportScroller: ViewportScroller) {
   }
 
   ngOnInit(): void {
     this.getUser();
-    if (this.nameSearch === undefined) {
-      this.nameSearch = '';
+
+  }
+
+  minus() {
+    if (this.num <= 1) {
+      this.num = 1;
+    } else {
+      this.num--;
     }
-    console.log('nameSearch' + this.nameSearch);
-    this.findAll();
+    this.total = this.num * this.price;
   }
 
-  findAll() {
-    this.productService.findAllByName(this.nameSearch).subscribe(next => {
-      this.products = next;
-    });
-  }
-
-  search() {
-    this.ngOnInit();
+  plus() {
+    this.num++;
+    this.total = this.num * this.price;
   }
 
   onHead() {
@@ -52,17 +52,18 @@ export class ProductComponent implements OnInit {
     this.username = this.tokenStorageService.getUser().username;
     this.accountService.findUserEmail(this.username).subscribe(next => {
       this.accountId = next.accountId;
+      this.findAllCartDetailByAccountId(this.accountId);
     });
   }
 
-  addCart(productId: number) {
-    this.productId = productId;
-    this.productService.saveCartDetailByUserIdAndProductId(this.accountId, this.productId, 1).subscribe(() => {
-      this.showMessageSuccess('Thành công');
-    }, error => {
-      this.showMessageError('');
-    });
-  }
+  // addCart(productId: number) {
+  //   this.productId = productId;
+  //   this.productService.saveCartDetailByUserIdAndProductId(this.accountId, this.productId, 1).subscribe(() => {
+  //     this.showMessageSuccess('Thành công');
+  //   }, error => {
+  //     this.showMessageError('');
+  //   });
+  // }
 
   showMessageSuccess(message: string) {
     Swal.fire({
@@ -79,6 +80,12 @@ export class ProductComponent implements OnInit {
       text: 'Sản phẩm đã được thêm vào giỏ hàng ' + message,
       icon: 'success',
       confirmButtonText: 'OK'
+    });
+  }
+
+  findAllCartDetailByAccountId(accountId: number) {
+    this.productService.findAllCartDetailByAccountId(accountId).subscribe(item => {
+      this.cartDetailDtos = item;
     });
   }
 }
