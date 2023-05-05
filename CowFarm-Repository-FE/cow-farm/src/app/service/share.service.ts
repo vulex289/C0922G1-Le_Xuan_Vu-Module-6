@@ -18,4 +18,5 @@ export class ShareService {
   getClickEvent(): Observable<any> {
     return this.subject.asObservable();
   }
+
 }

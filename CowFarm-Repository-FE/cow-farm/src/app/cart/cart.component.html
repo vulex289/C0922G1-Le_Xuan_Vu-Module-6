@@ -1,6 +1,6 @@
- <div class="row container-fluid   mt-3 text-center">
-    <h1><b>YOUR CART</b></h1>
-  </div>
+<div class="row container-fluid   mt-3 text-center">
+  <h1><b>YOUR CART</b></h1>
+</div>
 
 <div class="row container-fluid">
   <div class="col-lg-8">
@@ -16,7 +16,7 @@
           <b>Product</b>
         </div>
 
-        <div class="col-lg-4"></div>
+        <div class="col-lg-2"></div>
 
         <div class="col-lg-2">
           <b>Cost</b>
@@ -29,6 +29,9 @@
         <div class="col-lg-2">
           <b>Notional Price</b>
         </div>
+        <div class="col-lg-2">
+
+        </div>
       </div>
 
       <div class="row my-3" *ngFor="let s of cartDetailDtos">
@@ -37,31 +40,41 @@
                style="width: 200px; height: 100px;" alt="">
         </div>
 
-        <div class="col-lg-4" style="text-align: left">
+        <div class="col-lg-2" style="text-align: left">
           <b>{{s.productName}}</b>
         </div>
 
         <div class="col-lg-2">
-          <b>{{s.price}}</b>
+          <b>{{s.price| currency: "USD"}}</b>
         </div>
 
         <div class="col-lg-2">
-          <div class="my-3">
-            <button class="minus btn-outline-light" style="color: black" (click)="minus()">-</button>
-            <b class="mx-2">{{num}}</b>
-            <button class="plus btn-outline-light" style="color: black" (click)="plus()">+</button>
+          <div style="display: flex; align-items: center;">
+            <button class="minus btn-outline-light"
+                    style="color: black; flex-grow: 0; flex-shrink: 0; flex-basis: 30px;"
+                    (click)="minus(s.cartDetailId)">-
+            </button>
+            <input #quantity (change)="changeQuantity(+quantity.value,s.cartDetailId)" type="text" id="quantity"
+                   class="quantity-input text-center" value="{{s.quantity}}" style="  width: 50px">
+            <button class="plus btn-outline-light" style="color: black; flex-grow: 0; flex-shrink: 0; flex-basis: 30px;"
+                    (click)="plus(s.cartDetailId)">+
+            </button>
           </div>
         </div>
 
         <div class="col-lg-2">
-          <b>{{total}}</b>
+          <b>{{s.quantity * s.price | currency: "USD"}}</b>
+        </div>
+        <div class="col-lg-2">
+          <button class="btn btn-lg btn-danger  rounded-circle" (click)="remove(s.cartDetailId, s.cartId, s.productId,s.productName)">
+            X
+          </button>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!--    <div class="col-lg-1"></div>-->
   <div class="col-lg-4 px-4 mt-4">
     <div style="text-align: center">
       <div class="row">
@@ -74,7 +87,7 @@
           <b>Tổng số tiền: </b>
         </div>
         <div class="col-lg-6">
-          527.000đ
+          <span>{{sum | currency: "USD"}}</span>
         </div>
       </div>
 
@@ -83,7 +96,7 @@
           <b>Phí vận chuyển: </b>
         </div>
         <div class="col-lg-6">
-          30.000đ
+          <span>{{shippingPay | currency: "USD"}}</span>
         </div>
       </div>
 
@@ -94,7 +107,7 @@
         </div>
 
         <div class="col-lg-6">
-          <b>557.000đ</b>
+          <b>{{total| currency: "USD"}}</b>
         </div>
         <div class="row">
           <button class="btn btn-outline-success">Go to the payment page</button>
@@ -106,3 +119,5 @@
     </div>
   </div>
 </div>
+<button (click)="onHead()" class="btn btn-lg btn-warning btn-lg-square rounded-circle back-to-top"><i
+  class="bi bi-arrow-up"></i></button>

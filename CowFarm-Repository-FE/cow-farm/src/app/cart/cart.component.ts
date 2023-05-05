@@ -5,6 +5,8 @@ import {AccountService} from '../service/account.service';
 import Swal from 'sweetalert2';
 import {ViewportScroller} from '@angular/common';
 import {ICartDetailDto} from '../dto/icart-detail-dto';
+import {CartDetailService} from '../service/cart-detail.service';
+import {SearchService} from '../service/search.service';
 
 @Component({
   selector: 'app-cart',
@@ -12,80 +14,140 @@ import {ICartDetailDto} from '../dto/icart-detail-dto';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  num = 1;
-  price: number;
-  total: number;
+  sum = 0;
+  total = 0;
   username: string;
   accountId: number;
   cartDetailDtos: ICartDetailDto[];
+  shippingPay = 5;
 
   constructor(private productService: ProductService,
               private tokenStorageService: TokenStorageService,
               private accountService: AccountService,
-              private viewportScroller: ViewportScroller) {
+              private viewportScroller: ViewportScroller,
+              private cartDetailService: CartDetailService,
+              private searchService: SearchService) {
   }
 
   ngOnInit(): void {
-    this.getUser();
-
+    this.username = this.tokenStorageService.getUser().username;
+    this.accountService.findUserEmail(this.username).subscribe(next => {
+      this.accountId = next?.accountId;
+      this.findAllCartDetailByAccountId(this.accountId);
+    });
   }
 
-  minus() {
-    if (this.num <= 1) {
-      this.num = 1;
-    } else {
-      this.num--;
+  minus(cartDetailId: number) {
+    for (const item of this.cartDetailDtos) {
+      if (item.cartDetailId === cartDetailId) {
+        if (item.quantity <= 1) {
+          break;
+        } else {
+          item.quantity--;
+          this.cartDetailService.updateQuantityOfCartDetailByCartDetailId(item.quantity, cartDetailId).subscribe(() => {
+          });
+          this.sum -= item.price;
+          this.total = this.sum + this.shippingPay;
+          break;
+        }
+      }
     }
-    this.total = this.num * this.price;
+
   }
 
-  plus() {
-    this.num++;
-    this.total = this.num * this.price;
+  plus(cartDetailId: number) {
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < this.cartDetailDtos.length; i++) {
+      if (this.cartDetailDtos[i].cartDetailId === cartDetailId) {
+        this.cartDetailDtos[i].quantity++;
+        this.cartDetailService.updateQuantityOfCartDetailByCartDetailId(this.cartDetailDtos[i].quantity, cartDetailId).subscribe(() => {
+        }, error => {
+        });
+        this.sum += this.cartDetailDtos[i].price;
+        this.total = this.sum + this.shippingPay;
+        break;
+      }
+    }
   }
 
   onHead() {
     this.viewportScroller.scrollToPosition([0, 0]);
   }
 
-  getUser() {
-    this.username = this.tokenStorageService.getUser().username;
-    this.accountService.findUserEmail(this.username).subscribe(next => {
-      this.accountId = next.accountId;
-      this.findAllCartDetailByAccountId(this.accountId);
-    });
-  }
 
-  // addCart(productId: number) {
-  //   this.productId = productId;
-  //   this.productService.saveCartDetailByUserIdAndProductId(this.accountId, this.productId, 1).subscribe(() => {
-  //     this.showMessageSuccess('Thành công');
-  //   }, error => {
-  //     this.showMessageError('');
-  //   });
-  // }
-
-  showMessageSuccess(message: string) {
-    Swal.fire({
-      title: 'Thông báo!',
-      text: 'Thêm mới giỏ hàng ' + message,
-      icon: 'success',
-      confirmButtonText: 'OK'
-    });
-  }
-
-  showMessageError(message: string) {
-    Swal.fire({
-      title: 'Thông báo!',
-      text: 'Sản phẩm đã được thêm vào giỏ hàng ' + message,
-      icon: 'success',
-      confirmButtonText: 'OK'
-    });
+  getTotal() {
+    for (const element of this.cartDetailDtos) {
+      this.sum += element.quantity * element.price;
+      console.log('a' + this.sum);
+    }
+    this.total = this.sum + this.shippingPay;
   }
 
   findAllCartDetailByAccountId(accountId: number) {
     this.productService.findAllCartDetailByAccountId(accountId).subscribe(item => {
       this.cartDetailDtos = item;
+      if (this.sum === 0) {
+        this.getTotal();
+      }
     });
+  }
+
+  remove(cartDetailId: number, cartId: number, productId: number, productName: string) {
+    this.productService.deleteProductByProductIdAndCartId(cartId, productId).subscribe(() => {
+        Swal.fire({
+          title: 'Thông báo!',
+          text: 'Bạn vừa bỏ mặt hàng ' + productName,
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+        this.productService.findAllCartDetailByAccountId(this.accountId).subscribe(item => {
+          this.searchService.setCount(item.length);
+          this.cartDetailDtos = item;
+        });
+        for (const item of this.cartDetailDtos) {
+          if (item.cartDetailId === cartDetailId) {
+            this.sum -= item.price * item.quantity;
+            this.total = this.sum + this.shippingPay;
+            break;
+          }
+        }
+      }
+    );
+  }
+
+  changeQuantity(quantity: number, cartDetailId: number) {
+    if (isNaN(quantity)) {
+      Swal.fire({
+        title: 'Thông báo!',
+        text: 'Bạn vừa nhập sai định dạng số',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+      this.ngOnInit();
+    } else {
+      for (const item of this.cartDetailDtos) {
+        if (item.cartDetailId === cartDetailId) {
+          if (quantity < 1) {
+            Swal.fire({
+              title: 'Thông báo!',
+              text: 'Bạn phải nhập số lớn hơn 1',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+            quantity = item.quantity;
+            this.ngOnInit();
+            break;
+          } else {
+            this.sum -= item.price * item.quantity;
+            item.quantity = quantity;
+            this.cartDetailService.updateQuantityOfCartDetailByCartDetailId(item.quantity, cartDetailId).subscribe(() => {
+            });
+            this.sum += item.price * quantity;
+            this.total = this.sum + this.shippingPay;
+            break;
+          }
+        }
+      }
+    }
   }
 }

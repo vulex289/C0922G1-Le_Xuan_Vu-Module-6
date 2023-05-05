@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, ParamMap} from '@angular/router';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {ProductService} from '../service/product.service';
 import {Product} from '../model/product';
 import Swal from 'sweetalert2';
 import {TokenStorageService} from '../service/token-storage.service';
 import {AccountService} from '../service/account.service';
 import {ViewportScroller} from '@angular/common';
+import {SearchService} from '../service/search.service';
 
 
 @Component({
@@ -20,7 +21,9 @@ export class DetailComponent implements OnInit {
               private productService: ProductService,
               private tokenStorageService: TokenStorageService,
               private accountService: AccountService,
-              private viewportScroller: ViewportScroller) {
+              private viewportScroller: ViewportScroller,
+              private searchService: SearchService,
+              private route: Router) {
   }
 
   productId: number;
@@ -60,30 +63,37 @@ export class DetailComponent implements OnInit {
     this.num++;
     this.total = this.num * this.price;
   }
+
   onHead() {
     this.viewportScroller.scrollToPosition([0, 0]);
   }
 
   getUser() {
-    this.username = this.tokenStorageService.getUser().username;
+    this.username = this.tokenStorageService.getUser()?.username;
     this.accountService.findUserEmail(this.username).subscribe(next => {
-      this.accountId = next.accountId;
+      this.accountId = next?.accountId;
     });
   }
 
   addCart(productId: number) {
     this.productId = productId;
+    this.route.navigateByUrl('/cart');
     this.productService.saveCartDetailByUserIdAndProductId(this.accountId, this.productId, this.num).subscribe(() => {
-      this.showMessageSuccess('Thành công');
+      this.productService.findAllCartDetailByAccountId(this.accountId).subscribe(item => {
+        this.searchService.setCount(item.length);
+      });
     }, error => {
-      this.showMessageError('');
+      // if (!this.tokenStorageService.getToken()) {
+      //   this.showMessageError('Bạn phải đăng nhập vào trang web');
+      //   this.route.navigateByUrl('/login');
+      // }
     });
   }
 
   showMessageSuccess(message: string) {
     Swal.fire({
       title: 'Thông báo!',
-      text: 'Thêm mới giỏ hàng ' + message,
+      text: message,
       icon: 'success',
       confirmButtonText: 'OK'
     });
@@ -92,7 +102,7 @@ export class DetailComponent implements OnInit {
   showMessageError(message: string) {
     Swal.fire({
       title: 'Thông báo!',
-      text: 'Sản phẩm đã được thêm vào giỏ hàng ' + message,
+      text: message,
       icon: 'success',
       confirmButtonText: 'OK'
     });

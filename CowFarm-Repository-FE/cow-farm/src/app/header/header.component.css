@@ -1,0 +1,12 @@
+sup {
+  color: white;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+  width: 15px;
+  height: 18px;
+  line-height: 20px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 12px;
+}

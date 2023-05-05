@@ -26,10 +26,14 @@ export class ProductService {
   }
 
   saveCartDetailByUserIdAndProductId(accountId: number, productId: number, quantity: number): Observable<CartDetail> {
-    return this.httpClient.get<CartDetail>('http://localhost:8080/api/product-detail/addCart/' + productId + '/' + accountId + '/' + quantity);
+    return this.httpClient.get<CartDetail>('http://localhost:8080/api/cart/product-detail/addCart/' + productId + '/' + accountId + '/' + quantity);
   }
 
   findAllCartDetailByAccountId(accountId: number): Observable<ICartDetailDto[]> {
     return this.httpClient.get<ICartDetailDto[]>('http://localhost:8080/api/cart/' + accountId);
+  }
+
+  deleteProductByProductIdAndCartId(cartId: number, productId: number): Observable<any> {
+    return this.httpClient.delete<any>('http://localhost:8080/api/cart/cart-detail/' + cartId + '/' + productId);
   }
 }

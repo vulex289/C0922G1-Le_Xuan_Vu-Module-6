@@ -4,6 +4,11 @@ import {TokenStorageService} from '../service/token-storage.service';
 import Swal from 'sweetalert2';
 import {AccountService} from '../service/account.service';
 import {Router} from '@angular/router';
+import {ProductService} from '../service/product.service';
+import {ViewportScroller} from '@angular/common';
+import {CartDetailService} from '../service/cart-detail.service';
+import {ICartDetailDto} from '../dto/icart-detail-dto';
+import {SearchService} from '../service/search.service';
 
 @Component({
   selector: 'app-header',
@@ -16,15 +21,23 @@ export class HeaderComponent implements OnInit {
   name?: string;
   role?: string;
   isLoggedIn = false;
+  itemCount = 0;
 
   constructor(private tokenStorageService: TokenStorageService,
               private shareService: ShareService,
               private accountService: AccountService,
-              private router: Router) {
+              private router: Router,
+              private cartDetailService: CartDetailService,
+              private productService: ProductService,
+              private searchService: SearchService) {
     this.shareService.getClickEvent().subscribe(() => {
       this.loadHeader();
     });
+    this.searchService.getCount().subscribe(count => {
+      this.itemCount = count;
+    });
   }
+
 
   ngOnInit(): void {
     this.loadHeader();
@@ -45,8 +58,11 @@ export class HeaderComponent implements OnInit {
 
   findNameUser(): void {
     this.accountService.findUserEmail(this.username).subscribe(next => {
-      this.name = next.name;
-      this.img = next.avatar;
+      this.name = next?.name;
+      this.img = next?.avatar;
+      this.productService.findAllCartDetailByAccountId(next?.accountId).subscribe(item => {
+        this.itemCount = item?.length;
+      });
     });
   }
 

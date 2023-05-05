@@ -1,0 +1,68 @@
+*:not(i) {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+a{
+  text-decoration: none;
+}
+
+.card {
+  background-image: linear-gradient(to bottom right, #3243fa, #3b36d7);
+  color: white;
+  border-color: lightslategray;
+}
+
+img.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 200px;
+  float: right;
+  opacity: inherit;
+}
+
+#image, #image-1, #image-2 {
+  height: 75px;
+  width: 75px;
+}
+
+#pills-home-tab {
+  background-color: #323cfa;
+}
+
+#pills-home-tab.active {
+  background-color: #323cc4;
+}
+
+#pills-home-tab {
+  color: whitesmoke;
+}
+
+#pills-profile-tab {
+  background-color: #323cfa;
+}
+
+#pills-profile-tab.active {
+  background-color: #323cc4;
+}
+
+#pills-profile-tab {
+  color: whitesmoke;
+}
+
+#pills-contact-tab {
+  background-color: #232cda;
+}
+
+#pills-contact-tab.active {
+  background-color: #1f49d5;
+}
+
+#pills-contact-tab {
+  color: whitesmoke;
+}
+
+#pills-contact {
+  display: block;
+}
+

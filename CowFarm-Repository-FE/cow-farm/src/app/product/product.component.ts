@@ -5,6 +5,8 @@ import {ViewportScroller} from '@angular/common';
 import {TokenStorageService} from '../service/token-storage.service';
 import {AccountService} from '../service/account.service';
 import Swal from 'sweetalert2';
+import {SearchService} from '../service/search.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-product',
@@ -21,7 +23,9 @@ export class ProductComponent implements OnInit {
   constructor(private productService: ProductService,
               private viewportScroller: ViewportScroller,
               private tokenStorageService: TokenStorageService,
-              private accountService: AccountService) {
+              private accountService: AccountService,
+              private searchService: SearchService,
+              private route: Router) {
 
   }
 
@@ -49,9 +53,9 @@ export class ProductComponent implements OnInit {
   }
 
   getUser() {
-    this.username = this.tokenStorageService.getUser().username;
+    this.username = this.tokenStorageService.getUser()?.username;
     this.accountService.findUserEmail(this.username).subscribe(next => {
-      this.accountId = next.accountId;
+      this.accountId = next?.accountId;
     });
   }
 
@@ -59,8 +63,14 @@ export class ProductComponent implements OnInit {
     this.productId = productId;
     this.productService.saveCartDetailByUserIdAndProductId(this.accountId, this.productId, 1).subscribe(() => {
       this.showMessageSuccess('Thành công');
+      this.productService.findAllCartDetailByAccountId(this.accountId).subscribe(item => {
+        this.searchService.setCount(item.length);
+      });
     }, error => {
-      this.showMessageError('');
+      if (!this.tokenStorageService.getToken()) {
+        this.showMessageError('Bạn phải đăng nhập vào trang web');
+        this.route.navigateByUrl('/login');
+      }
     });
   }
 
@@ -76,7 +86,7 @@ export class ProductComponent implements OnInit {
   showMessageError(message: string) {
     Swal.fire({
       title: 'Thông báo!',
-      text: 'Sản phẩm đã được thêm vào giỏ hàng ' + message,
+      text: message,
       icon: 'success',
       confirmButtonText: 'OK'
     });
