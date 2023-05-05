@@ -28,12 +28,7 @@ import java.util.Objects;
 public class RestProductController {
     @Autowired
     private IProductService productService;
-    @Autowired
-    private IAccountService accountService;
-    @Autowired
-    private ICartService cartService;
-    @Autowired
-    private ICartDetailService cartDetailService;
+
 
     @GetMapping("api/product/list")
     public ResponseEntity<List<Product>> findAll() {
@@ -65,42 +60,5 @@ public class RestProductController {
         }
     }
 
-    @GetMapping("/api/product-detail/addCart/{productId}/{accountId}/{quantity}")
-    public ResponseEntity<CartDetail> saveCartDetailByUserIdAndProductId(@PathVariable Long productId,
-                                                                         @PathVariable Long accountId, @PathVariable int quantity) {
-        Product product = productService.findById(productId);
-        Account account = accountService.findAccountById(accountId);
 
-        List<ICartDetailDto> cartDetailDtoList = cartDetailService.findAllByAccountId(accountId);
-        for (ICartDetailDto cartDetailDto : cartDetailDtoList) {
-            if (Objects.equals(cartDetailDto.getProductId(), productId) && quantity == 1) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-            if (Objects.equals(cartDetailDto.getProductId(), productId) && quantity > 1) {
-                CartDetail cartDetail = cartDetailService.findById(cartDetailDto.getCartDetailId());
-                cartDetail.setQuantity(quantity);
-                cartDetailService.save(cartDetail);
-                return new ResponseEntity<>(cartDetail, HttpStatus.OK);
-            }
-        }
-        Cart cart = new Cart();
-        Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String dateNow = simpleDateFormat.format(date);
-        cart.setDateOrder(dateNow);
-        cart.setAccount(account);
-        cartService.save(cart);
-        CartDetail cartDetail = new CartDetail();
-        cartDetail.setCart(cart);
-        cartDetail.setProduct(product);
-        cartDetail.setQuantity(quantity);
-        CartDetail cartDetail1 = cartDetailService.save(cartDetail);
-        return new ResponseEntity<>(cartDetail1, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/api/cart/{accountId}")
-    public ResponseEntity<List<ICartDetailDto2>> findAllCartByAccountId(@PathVariable Long accountId) {
-        List<ICartDetailDto2> cartDetailDtoList = cartDetailService.findvAllByAccountId(accountId);
-        return new ResponseEntity<>(cartDetailDtoList, HttpStatus.OK);
-    }
 }

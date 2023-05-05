@@ -6,11 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-/**
- * Created by: Phạm Tiến
- * Date: 29/03/2023
- * Class: JwtUtility
- */
+
 @Component
 public class JwtUtility  {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtility.class);

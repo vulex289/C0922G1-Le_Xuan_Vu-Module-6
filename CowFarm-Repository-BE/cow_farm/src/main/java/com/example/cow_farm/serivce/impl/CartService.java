@@ -14,4 +14,9 @@ public class CartService implements ICartService {
     public Cart save(Cart cart) {
         return cartRepository.save(cart);
     }
+
+    @Override
+    public Cart findById(Long accountId) {
+        return cartRepository.findCartByAccount_AccountId(accountId);
+    }
 }

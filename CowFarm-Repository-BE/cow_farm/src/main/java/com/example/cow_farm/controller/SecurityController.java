@@ -1,9 +1,11 @@
 package com.example.cow_farm.controller;
 
 import com.example.cow_farm.jwt.JwtUtility;
+
+
 import com.example.cow_farm.payload.request.LoginRequest;
+
 import com.example.cow_farm.payload.response.JwtResponse;
-import com.example.cow_farm.serivce.IAccountService;
 import com.example.cow_farm.serivce.impl.AccountDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,6 @@ public class SecurityController {
     private JwtUtility jwtUtility;
     @Autowired
     private AuthenticationManager authenticationManager;
-
 
 
     @PostMapping("/login")

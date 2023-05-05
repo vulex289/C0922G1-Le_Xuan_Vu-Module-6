@@ -29,4 +29,10 @@ public interface ICartDetailRepository extends JpaRepository<CartDetail,Long> {
             "JOIN product p ON p.product_id = cd.product_id\n" +
             "WHERE c.account_id = :id", nativeQuery = true)
     List<ICartDetailDto2> findAllvCartDetailByAccountId(@Param("id") Long accountId);
+
+    void deleteCartDetailByCartCartIdAndProductProductId(Long cartId,Long productId);
+
+    @Modifying
+    @Query(value = "update cart_detail set quantity = :quantity where cart_detail_id = :id",nativeQuery = true)
+    void updateQuantityOfCartDetail(@Param("quantity") int quantity, @Param("id") Long cartDetailId);
 }

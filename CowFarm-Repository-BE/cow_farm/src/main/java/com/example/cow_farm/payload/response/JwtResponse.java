@@ -1,8 +1,8 @@
+
+
 package com.example.cow_farm.payload.response;
 
 import java.util.List;
-
-
 public class JwtResponse {
 
     private String token;

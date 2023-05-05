@@ -38,5 +38,15 @@ public class CartDetailService implements ICartDetailService {
         return cartDetailRepository.findById(cartDetailId).orElse(null);
     }
 
+    @Override
+    public void deleteByProductId(Long cartId, Long productId) {
+        this.cartDetailRepository.deleteCartDetailByCartCartIdAndProductProductId(cartId,productId);
+    }
+
+    @Override
+    public void updateQuantityOfCartDetail(int quantity, Long cartDetailId) {
+        this.cartDetailRepository.updateQuantityOfCartDetail(quantity,cartDetailId);
+    }
+
 
 }
