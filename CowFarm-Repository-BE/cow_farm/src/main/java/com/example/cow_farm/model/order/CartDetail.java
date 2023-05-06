@@ -11,7 +11,7 @@ public class CartDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_detail_id")
     private Long cartDetailId;
-    private double quantity;
+    private int quantity;
     @ManyToOne
     @JoinColumn(name = "cart_id",referencedColumnName = "cart_id")
     private Cart cart;
@@ -30,11 +30,11 @@ public class CartDetail {
         this.cartDetailId = cartDetailId;
     }
 
-    public double getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(double quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 

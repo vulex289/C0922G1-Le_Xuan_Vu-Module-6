@@ -41,12 +41,10 @@ public class RestCartDetailController {
 
         List<ICartDetailDto> cartDetailDtoList = cartDetailService.findAllByAccountId(accountId);
         for (ICartDetailDto cartDetailDto : cartDetailDtoList) {
-            if (Objects.equals(cartDetailDto.getProductId(), productId) && quantity == 1) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-            if (Objects.equals(cartDetailDto.getProductId(), productId) && quantity > 1) {
+            if (Objects.equals(cartDetailDto.getProductId(), productId) ) {
                 CartDetail cartDetail = cartDetailService.findById(cartDetailDto.getCartDetailId());
-                cartDetail.setQuantity(quantity);
+               int quantity1 = cartDetail.getQuantity() + quantity;
+                cartDetail.setQuantity(quantity1);
                 cartDetailService.save(cartDetail);
                 return new ResponseEntity<>(cartDetail, HttpStatus.OK);
             }
