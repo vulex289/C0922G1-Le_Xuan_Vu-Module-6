@@ -66,8 +66,8 @@
           <b>{{s.quantity * s.price | currency: "USD"}}</b>
         </div>
         <div class="col-lg-2">
-          <button class="btn btn-lg btn-danger  rounded-circle" (click)="remove(s.cartDetailId, s.cartId, s.productId,s.productName)">
-            X
+          <button class="btn btn-square btn-secondary rounded-circle " (click)="remove(s.cartDetailId, s.cartId, s.productId,s.productName)">
+            <i class="bi bi-trash"></i>
           </button>
         </div>
       </div>
@@ -84,7 +84,7 @@
 
       <div class="row">
         <div class="col-lg-6">
-          <b>Tổng số tiền: </b>
+          <b>The total amount: </b>
         </div>
         <div class="col-lg-6">
           <span>{{sum | currency: "USD"}}</span>
@@ -93,7 +93,7 @@
 
       <div class="row">
         <div class="col-lg-6">
-          <b>Phí vận chuyển: </b>
+          <b>Shipping fee: </b>
         </div>
         <div class="col-lg-6">
           <span>{{shippingPay | currency: "USD"}}</span>
@@ -103,14 +103,14 @@
       <hr>
       <div class="row">
         <div class="col-lg-6">
-          <h5><b>Tổng thanh toán: </b></h5>
+          <h5><b>Total payment: </b></h5>
         </div>
 
         <div class="col-lg-6">
           <b>{{total| currency: "USD"}}</b>
         </div>
         <div class="row">
-          <button class="btn btn-outline-success">Go to the payment page</button>
+          <button class="btn btn-outline-success" routerLink="/receipt">Go to the payment page</button>
         </div>
 
 

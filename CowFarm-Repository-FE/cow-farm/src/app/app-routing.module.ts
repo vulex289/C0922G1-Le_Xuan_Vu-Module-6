@@ -32,6 +32,7 @@ const routes: Routes = [
     component: CartComponent
   },
   {
+    canActivate: [UserGuard],
     path: 'receipt',
     component: ReceiptComponent
   },

@@ -48,6 +48,7 @@ export class CartComponent implements OnInit {
           });
           this.sum -= item.price;
           this.total = this.sum + this.shippingPay;
+          this.searchService.setTotal(this.total);
           break;
         }
       }
@@ -65,6 +66,7 @@ export class CartComponent implements OnInit {
         });
         this.sum += this.cartDetailDtos[i].price;
         this.total = this.sum + this.shippingPay;
+        this.searchService.setTotal(this.total);
         break;
       }
     }
@@ -78,9 +80,9 @@ export class CartComponent implements OnInit {
   getTotal() {
     for (const element of this.cartDetailDtos) {
       this.sum += element.quantity * element.price;
-      console.log('a' + this.sum);
     }
     this.total = this.sum + this.shippingPay;
+    this.searchService.setTotal(this.total);
   }
 
   findAllCartDetailByAccountId(accountId: number) {
@@ -108,6 +110,7 @@ export class CartComponent implements OnInit {
           if (item.cartDetailId === cartDetailId) {
             this.sum -= item.price * item.quantity;
             this.total = this.sum + this.shippingPay;
+            this.searchService.setTotal(this.total);
             break;
           }
         }
@@ -144,6 +147,7 @@ export class CartComponent implements OnInit {
             });
             this.sum += item.price * quantity;
             this.total = this.sum + this.shippingPay;
+            this.searchService.setTotal(this.total);
             break;
           }
         }

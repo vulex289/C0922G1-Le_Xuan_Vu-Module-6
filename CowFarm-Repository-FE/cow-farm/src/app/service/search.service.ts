@@ -10,6 +10,7 @@ export class SearchService {
   }
 
   itemCount: BehaviorSubject<any> = new BehaviorSubject<number>(0);
+  itemTotal: BehaviorSubject<any> = new BehaviorSubject<number>(0);
 
   getCount(): Observable<any> {
     return this.itemCount.asObservable();
@@ -17,5 +18,12 @@ export class SearchService {
 
   setCount(count: number): void {
     this.itemCount.next(count);
+  }
+  getTotal(): Observable<any> {
+    return this.itemTotal.asObservable();
+  }
+
+  setTotal(total: number): void {
+    this.itemTotal.next(total);
   }
 }
