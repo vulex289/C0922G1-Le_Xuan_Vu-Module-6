@@ -26,6 +26,7 @@ export class ProductService {
   }
 
   saveCartDetailByUserIdAndProductId(accountId: number, productId: number, quantity: number): Observable<CartDetail> {
+    // tslint:disable-next-line:max-line-length
     return this.httpClient.get<CartDetail>('http://localhost:8080/api/cart/product-detail/addCart/' + productId + '/' + accountId + '/' + quantity);
   }
 
@@ -35,5 +36,9 @@ export class ProductService {
 
   deleteProductByProductIdAndCartId(cartId: number, productId: number): Observable<any> {
     return this.httpClient.delete<any>('http://localhost:8080/api/cart/cart-detail/' + cartId + '/' + productId);
+  }
+
+  setInventoryByProduct(inventoryLevel: number, productId: number): Observable<any> {
+    return this.httpClient.get<any>('http://localhost:8080/api/product-inventory-level/' + inventoryLevel + '/' + productId);
   }
 }

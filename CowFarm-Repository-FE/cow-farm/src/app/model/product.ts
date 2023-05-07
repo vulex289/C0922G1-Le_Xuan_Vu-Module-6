@@ -6,6 +6,7 @@ export interface Product {
   productName: string;
   description: string;
   price: number;
+  inventoryLevel: number;
   imageList: string[];
   flagDelete: boolean;
   productType: ProductType;

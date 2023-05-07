@@ -71,6 +71,14 @@ export class ProductComponent implements OnInit {
         this.showMessageError('Bạn phải đăng nhập vào trang web');
         this.route.navigateByUrl('/login');
       }
+      if (error.status === 404) {
+        Swal.fire({
+          title: 'Thông báo!',
+          text: 'Bạn đã nhập quá số lượng hàng tồn kho',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+      }
     });
   }
 

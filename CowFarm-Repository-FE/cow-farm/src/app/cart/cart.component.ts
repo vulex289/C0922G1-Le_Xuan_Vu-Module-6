@@ -33,8 +33,15 @@ export class CartComponent implements OnInit {
     this.username = this.tokenStorageService.getUser().username;
     this.accountService.findUserEmail(this.username).subscribe(next => {
       this.accountId = next?.accountId;
-      this.findAllCartDetailByAccountId(this.accountId);
+      this.productService.findAllCartDetailByAccountId(this.accountId).subscribe(item => {
+        this.cartDetailDtos = item;
+        console.log(this.cartDetailDtos);
+        if (this.sum === 0) {
+          this.getTotal();
+        }
+      });
     });
+
   }
 
   minus(cartDetailId: number) {
@@ -61,13 +68,24 @@ export class CartComponent implements OnInit {
     for (let i = 0; i < this.cartDetailDtos.length; i++) {
       if (this.cartDetailDtos[i].cartDetailId === cartDetailId) {
         this.cartDetailDtos[i].quantity++;
-        this.cartDetailService.updateQuantityOfCartDetailByCartDetailId(this.cartDetailDtos[i].quantity, cartDetailId).subscribe(() => {
-        }, error => {
-        });
-        this.sum += this.cartDetailDtos[i].price;
-        this.total = this.sum + this.shippingPay;
-        this.searchService.setTotal(this.total);
-        break;
+        if (this.cartDetailDtos[i].quantity > this.cartDetailDtos[i].inventoryLevel) {
+          Swal.fire({
+            title: 'Thông báo!',
+            text: 'Bạn đã nhập quá số lượng tồn kho - Số lượng tồn kho còn ' + this.cartDetailDtos[i].inventoryLevel,
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+          this.cartDetailDtos[i].quantity--;
+          break;
+        } else {
+          this.cartDetailService.updateQuantityOfCartDetailByCartDetailId(this.cartDetailDtos[i].quantity, cartDetailId).subscribe(() => {
+          }, error => {
+          });
+          this.sum += this.cartDetailDtos[i].price;
+          this.total = this.sum + this.shippingPay;
+          this.searchService.setTotal(this.total);
+          break;
+        }
       }
     }
   }
@@ -138,6 +156,17 @@ export class CartComponent implements OnInit {
               confirmButtonText: 'OK'
             });
             quantity = item.quantity;
+            this.ngOnInit();
+            break;
+          } else if (quantity > item.inventoryLevel) {
+            quantity = item.quantity;
+            Swal.fire({
+              title: 'Thông báo!',
+              text: 'Bạn đã nhập quá số lượng tồn kho - Số lượng tồn kho còn ' + item.inventoryLevel,
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+
             this.ngOnInit();
             break;
           } else {

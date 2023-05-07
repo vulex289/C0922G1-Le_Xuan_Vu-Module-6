@@ -36,12 +36,12 @@
 
       <div class="row my-3" *ngFor="let s of cartDetailDtos">
         <div class="col-lg-2">
-          <img class="img-fluid mb-4" src="../../assets/img/{{s.image}}"
+          <img class="img-fluid mb-4" src="../../assets/img/{{s?.image}}"
                style="width: 200px; height: 100px;" alt="">
         </div>
 
         <div class="col-lg-2" style="text-align: left">
-          <b>{{s.productName}}</b>
+          <a routerLink="/product-detail//{{s?.productId}}"><b>{{s?.productName}}</b></a>
         </div>
 
         <div class="col-lg-2">
@@ -57,20 +57,21 @@
             <input #quantity (change)="changeQuantity(+quantity.value,s.cartDetailId)" type="text" id="quantity"
                    class="quantity-input text-center" value="{{s.quantity}}" style="  width: 50px">
             <button class="plus btn-outline-light" style="color: black; flex-grow: 0; flex-shrink: 0; flex-basis: 30px;"
-                    (click)="plus(s.cartDetailId)">+
+                    (click)="plus(s?.cartDetailId)">+
             </button>
           </div>
         </div>
 
         <div class="col-lg-2">
-          <b>{{s.quantity * s.price | currency: "USD"}}</b>
+          <b>{{s?.quantity * s?.price | currency: "USD"}}</b>
         </div>
         <div class="col-lg-2">
-          <button class="btn btn-square btn-secondary rounded-circle " (click)="remove(s.cartDetailId, s.cartId, s.productId,s.productName)">
+          <button class="btn btn-square btn-secondary rounded-circle " (click)="remove(s?.cartDetailId, s?.cartId, s?.productId,s?.productName)">
             <i class="bi bi-trash"></i>
           </button>
         </div>
       </div>
+      <div class="row" *ngIf="cartDetailDtos?.length === 0" ><h3 class="text-danger">Your Cart List is empty!</h3></div>
 
     </div>
   </div>
@@ -110,7 +111,7 @@
           <b>{{total| currency: "USD"}}</b>
         </div>
         <div class="row">
-          <button class="btn btn-outline-success" routerLink="/receipt">Go to the payment page</button>
+          <button class="btn btn-outline-success" [disabled]="cartDetailDtos?.length === 0" routerLink="/receipt">Go to the payment page</button>
         </div>
 
 

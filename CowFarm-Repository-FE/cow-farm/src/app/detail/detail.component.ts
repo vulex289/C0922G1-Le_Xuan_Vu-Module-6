@@ -40,6 +40,7 @@ export class DetailComponent implements OnInit {
       this.findProductById(this.productId);
     });
     this.getUser();
+    this.viewportScroller.scrollToPosition([0, 0]);
   }
 
   findProductById(productId: number) {
@@ -77,18 +78,27 @@ export class DetailComponent implements OnInit {
 
   addCart(productId: number) {
     this.productId = productId;
-    this.route.navigateByUrl('/cart');
     this.productService.saveCartDetailByUserIdAndProductId(this.accountId, this.productId, this.num).subscribe(() => {
       this.productService.findAllCartDetailByAccountId(this.accountId).subscribe(item => {
         this.searchService.setCount(item.length);
       });
-    }, error => {
-      // if (!this.tokenStorageService.getToken()) {
-      //   this.showMessageError('Bạn phải đăng nhập vào trang web');
-      //   this.route.navigateByUrl('/login');
-      // }
+    }, e => {
+      if (!this.tokenStorageService.getToken()) {
+        this.showMessageError('Bạn phải đăng nhập vào trang web');
+        this.route.navigateByUrl('/login');
+      }
+      if (e.status === 404) {
+        Swal.fire({
+          title: 'Thông báo!',
+          text: 'Bạn đã nhập quá số lượng hàng tồn kho',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+      }
     });
+    this.route.navigateByUrl('/cart');
   }
+
 
   showMessageSuccess(message: string) {
     Swal.fire({

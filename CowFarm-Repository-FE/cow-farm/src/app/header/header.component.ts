@@ -1,13 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ShareService} from '../service/share.service';
 import {TokenStorageService} from '../service/token-storage.service';
-import Swal from 'sweetalert2';
 import {AccountService} from '../service/account.service';
 import {Router} from '@angular/router';
 import {ProductService} from '../service/product.service';
-import {ViewportScroller} from '@angular/common';
 import {CartDetailService} from '../service/cart-detail.service';
-import {ICartDetailDto} from '../dto/icart-detail-dto';
 import {SearchService} from '../service/search.service';
 
 @Component({
@@ -69,6 +66,7 @@ export class HeaderComponent implements OnInit {
   logOut() {
     this.tokenStorageService.signOut();
     this.ngOnInit();
+    this.searchService.setCount(0);
     this.router.navigateByUrl('/login');
   }
 }

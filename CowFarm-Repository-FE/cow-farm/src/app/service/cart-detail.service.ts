@@ -13,4 +13,7 @@ export class CartDetailService {
   updateQuantityOfCartDetailByCartDetailId(quantity: number, cartDetailId: number): Observable<any> {
     return this.httpClient.get<any>('http://localhost:8080/api/cart/cart-detail/updateQuantity/' + cartDetailId + '/' + quantity);
   }
+  deleteAllDetailByAccountId(accountId: number): Observable<any>{
+    return this.httpClient.delete<any>('http://localhost:8080/api/cart/deleteAll/cart-detail/' + accountId);
+  }
 }

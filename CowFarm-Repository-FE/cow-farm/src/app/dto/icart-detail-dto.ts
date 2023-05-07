@@ -7,4 +7,5 @@ export interface ICartDetailDto {
   quantity: number;
   productId: number;
   image: string;
+  inventoryLevel: number;
 }
