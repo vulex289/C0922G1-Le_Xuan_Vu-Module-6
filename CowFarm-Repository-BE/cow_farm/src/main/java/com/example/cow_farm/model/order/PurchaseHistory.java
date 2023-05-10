@@ -7,29 +7,38 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class Cart {
+public class PurchaseHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_id")
-    private Long cartId;
-    @Column(columnDefinition = "DATE")
+    @Column(name = "purchase_history_id")
+    private Long purchaseHistoryId;
+    private String billCode;
+    @Column(columnDefinition = "DATE TIME")
     private String dateOrder;
+    private double total;
     @ManyToOne
-    @JoinColumn(name = "account_id",referencedColumnName = "account_id")
     private Account account;
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "purchaseHistory")
     @JsonBackReference
     private Set<CartDetail> cartDetailSet;
 
-    public Cart() {
+    public PurchaseHistory() {
     }
 
-    public Long getCartId() {
-        return cartId;
+    public Long getPurchaseHistoryId() {
+        return purchaseHistoryId;
     }
 
-    public void setCartId(Long cartId) {
-        this.cartId = cartId;
+    public void setPurchaseHistoryId(Long purchaseHistoryId) {
+        this.purchaseHistoryId = purchaseHistoryId;
+    }
+
+    public String getBillCode() {
+        return billCode;
+    }
+
+    public void setBillCode(String billCode) {
+        this.billCode = billCode;
     }
 
     public String getDateOrder() {
@@ -40,6 +49,14 @@ public class Cart {
         this.dateOrder = dateOrder;
     }
 
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
     public Account getAccount() {
         return account;
     }
@@ -47,7 +64,6 @@ public class Cart {
     public void setAccount(Account account) {
         this.account = account;
     }
-
 
     public Set<CartDetail> getCartDetailSet() {
         return cartDetailSet;

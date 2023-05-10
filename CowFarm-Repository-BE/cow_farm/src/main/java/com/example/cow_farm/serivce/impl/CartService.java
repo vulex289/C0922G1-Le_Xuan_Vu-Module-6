@@ -19,4 +19,9 @@ public class CartService implements ICartService {
     public Cart findById(Long accountId) {
         return cartRepository.findCartByAccount_AccountId(accountId);
     }
+
+    @Override
+    public void deleteByCartId(Long cartId) {
+        this.cartRepository.deleteCartByCartId(cartId);
+    }
 }

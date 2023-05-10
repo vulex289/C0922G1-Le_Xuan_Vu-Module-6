@@ -10,10 +10,13 @@ import java.util.List;
 public interface ICartDetailService {
     CartDetail save(CartDetail cartDetail);
     List<ICartDetailDto2> findvAllByAccountId(Long accountId);
+    List<Long> findAllvCartDetailByAccountIdAndIsDelete(Long accountId);
     List<ICartDetailDto> findAllByAccountId(Long accountId);
     CartDetail findById(Long cartDetailId);
 
     void deleteByProductId(Long cartId, Long productId);
     void updateQuantityOfCartDetail( int quantity,  Long cartDetailId);
+    void deleteAllCartVDetail(  Long accountId);
 
+    CartDetail findByIdAnIsDelete(Long cartDetailId);
 }

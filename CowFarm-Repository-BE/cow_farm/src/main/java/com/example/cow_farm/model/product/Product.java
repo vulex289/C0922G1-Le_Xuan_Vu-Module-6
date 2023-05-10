@@ -18,6 +18,7 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String description;
     private double price;
+    private int inventoryLevel;
     @ElementCollection
     private List<String> imageList = new ArrayList<>();
     private Boolean flagDelete;
@@ -42,6 +43,14 @@ public class Product {
 
     public ProductUnit getProductUnit() {
         return productUnit;
+    }
+
+    public int getInventoryLevel() {
+        return inventoryLevel;
+    }
+
+    public void setInventoryLevel(int inventoryLevel) {
+        this.inventoryLevel = inventoryLevel;
     }
 
     public void setProductUnit(ProductUnit productUnit) {

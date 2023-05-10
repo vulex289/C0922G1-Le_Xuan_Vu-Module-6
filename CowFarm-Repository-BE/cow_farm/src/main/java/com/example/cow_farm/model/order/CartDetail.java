@@ -18,9 +18,31 @@ public class CartDetail {
     @ManyToOne
     @JoinColumn(name = "product_id",referencedColumnName = "product_id")
     private Product product;
+    @ManyToOne
+    @JoinColumn(name = "purchase_history_id",referencedColumnName = "purchase_history_id")
+    private PurchaseHistory purchaseHistory;
+    private Integer isDelete;
+
 
     public CartDetail() {
     }
+
+    public PurchaseHistory getPurchaseHistory() {
+        return purchaseHistory;
+    }
+
+    public void setPurchaseHistory(PurchaseHistory purchaseHistory) {
+        this.purchaseHistory = purchaseHistory;
+    }
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
 
     public Long getCartDetailId() {
         return cartDetailId;

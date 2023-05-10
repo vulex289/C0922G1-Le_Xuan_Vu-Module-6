@@ -10,4 +10,5 @@ public interface ICartDetailDto {
     int getPrice();
     int getQuantity();
     Long getProductId();
+    Long getInventoryLevel();
 }

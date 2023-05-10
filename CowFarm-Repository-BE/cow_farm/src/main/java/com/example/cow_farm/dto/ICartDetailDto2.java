@@ -11,4 +11,5 @@ public interface ICartDetailDto2 {
     int getQuantity();
     Long getProductId();
     String getImage();
+    Long getInventoryLevel();
 }

@@ -2,6 +2,7 @@ package com.example.cow_farm.model.account;
 
 
 import com.example.cow_farm.model.order.Cart;
+import com.example.cow_farm.model.order.PurchaseHistory;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -34,6 +35,9 @@ public class Account {
     private Set<AccountRole> accountRoleSet;
     @OneToMany(mappedBy = "account")
     @JsonBackReference
+    private Set<PurchaseHistory> purchaseHistorySet;
+    @OneToMany(mappedBy = "account")
+    @JsonBackReference
     private Set<Cart> orderSet;
 
     public Account() {
@@ -41,6 +45,14 @@ public class Account {
 
     public Set<Cart> getOrderSet() {
         return orderSet;
+    }
+
+    public Set<PurchaseHistory> getPurchaseHistorySet() {
+        return purchaseHistorySet;
+    }
+
+    public void setPurchaseHistorySet(Set<PurchaseHistory> purchaseHistorySet) {
+        this.purchaseHistorySet = purchaseHistorySet;
     }
 
     public void setOrderSet(Set<Cart> orderSet) {
