@@ -34,21 +34,22 @@
         </div>
       </div>
 
-      <div class="row my-3" *ngFor="let s of cartDetailDtos">
-        <div class="col-lg-2">
+      <div class="row my-3 wow my-3 fadeInUp" *ngFor="let s of cartDetailDtos,let i = index"
+           [ngStyle]="{'animation-delay': i * 0.3 + 's'}">
+        <div class="col-lg-2" [hidden]="s.quantity === 0">
           <img class="img-fluid mb-4" src="../../assets/img/{{s?.image}}"
                style="width: 200px; height: 100px;" alt="">
         </div>
 
-        <div class="col-lg-2" style="text-align: left">
+        <div class="col-lg-2" style="text-align: left" [hidden]="s.quantity === 0">
           <a routerLink="/product-detail//{{s?.productId}}"><b>{{s?.productName}}</b></a>
         </div>
 
-        <div class="col-lg-2">
+        <div class="col-lg-2" [hidden]="s.quantity === 0">
           <b>{{s.price| currency: "USD"}}</b>
         </div>
 
-        <div class="col-lg-2">
+        <div class="col-lg-2" [hidden]="s.quantity === 0">
           <div style="display: flex; align-items: center;">
             <button class="minus btn-outline-light"
                     style="color: black; flex-grow: 0; flex-shrink: 0; flex-basis: 30px;"
@@ -56,16 +57,16 @@
             </button>
             <input #quantity (change)="changeQuantity(+quantity.value,s.cartDetailId)" type="text" id="quantity"
                    class="quantity-input text-center" value="{{s.quantity}}" style="  width: 50px">
-            <button class="plus btn-outline-light" style="color: black; flex-grow: 0; flex-shrink: 0; flex-basis: 30px;"
+            <button class="plus btn-outline-light" style="color: #000000; flex-grow: 0; flex-shrink: 0; flex-basis: 30px;"
                     (click)="plus(s?.cartDetailId)">+
             </button>
           </div>
         </div>
 
-        <div class="col-lg-2">
+        <div class="col-lg-2" [hidden]="s.quantity === 0">
           <b>{{s?.quantity * s?.price | currency: "USD"}}</b>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2" [hidden]="s.quantity === 0">
           <button class="btn btn-square btn-secondary rounded-circle " (click)="remove(s?.cartDetailId, s?.cartId, s?.productId,s?.productName)">
             <i class="bi bi-trash"></i>
           </button>
@@ -111,7 +112,7 @@
           <b>{{total| currency: "USD"}}</b>
         </div>
         <div class="row">
-          <button class="btn btn-outline-success" [disabled]="cartDetailDtos?.length === 0" routerLink="/receipt">Go to the payment page</button>
+          <button class="btn btn-outline-success" [disabled]="cartDetailDtos?.length === 0" (click)="routeReceipt()">Go to the payment page</button>
         </div>
 
 

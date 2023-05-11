@@ -34,7 +34,6 @@ export class ProductComponent implements OnInit {
     if (this.nameSearch === undefined) {
       this.nameSearch = '';
     }
-    console.log('nameSearch' + this.nameSearch);
     this.findAll();
   }
 
@@ -60,32 +59,34 @@ export class ProductComponent implements OnInit {
   }
 
   addCart(productId: number) {
-    this.productId = productId;
-    this.productService.saveCartDetailByUserIdAndProductId(this.accountId, this.productId, 1).subscribe(() => {
-      this.showMessageSuccess('Thành công');
-      this.productService.findAllCartDetailByAccountId(this.accountId).subscribe(item => {
-        this.searchService.setCount(item.length);
-      });
-    }, error => {
-      if (!this.tokenStorageService.getToken()) {
-        this.showMessageError('Bạn phải đăng nhập vào trang web');
-        this.route.navigateByUrl('/login');
-      }
-      if (error.status === 404) {
-        Swal.fire({
-          title: 'Thông báo!',
-          text: 'Bạn đã nhập quá số lượng hàng tồn kho',
-          icon: 'success',
-          confirmButtonText: 'OK'
+    if (!this.tokenStorageService.getToken()) {
+      this.showMessageError('You need login in web');
+      this.route.navigateByUrl('/login');
+    } else {
+      this.productId = productId;
+      this.productService.saveCartDetailByUserIdAndProductId(this.accountId, this.productId, 1).subscribe(() => {
+        this.showMessageSuccess();
+        this.productService.findAllCartDetailByAccountId(this.accountId).subscribe(item => {
+          this.searchService.setCount(item.length);
         });
-      }
-    });
+      }, error => {
+        if (error.status === 404) {
+          Swal.fire({
+            title: 'Notification!',
+            text: 'You have entered an excess amount of inventory - The number of goods in stock ',
+            icon: 'error',
+            confirmButtonColor: 'darkgreen',
+            confirmButtonText: 'OK'
+          });
+        }
+      });
+    }
   }
 
-  showMessageSuccess(message: string) {
+  showMessageSuccess() {
     Swal.fire({
-      title: 'Thông báo!',
-      text: 'Thêm mới giỏ hàng ' + message,
+      title: 'Notification!',
+      text: 'New cart successfully added ',
       icon: 'success',
       confirmButtonText: 'OK'
     });
@@ -93,9 +94,10 @@ export class ProductComponent implements OnInit {
 
   showMessageError(message: string) {
     Swal.fire({
-      title: 'Thông báo!',
+      title: 'Notification!',
       text: message,
       icon: 'success',
+      confirmButtonColor: 'darkgreen',
       confirmButtonText: 'OK'
     });
   }

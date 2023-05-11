@@ -7,6 +7,8 @@ import {ViewportScroller} from '@angular/common';
 import {ICartDetailDto} from '../dto/icart-detail-dto';
 import {CartDetailService} from '../service/cart-detail.service';
 import {SearchService} from '../service/search.service';
+import {Router} from '@angular/router';
+import {ShareService} from '../service/share.service';
 
 @Component({
   selector: 'app-cart',
@@ -20,13 +22,15 @@ export class CartComponent implements OnInit {
   accountId: number;
   cartDetailDtos: ICartDetailDto[];
   shippingPay = 5;
+  flag = false;
 
   constructor(private productService: ProductService,
               private tokenStorageService: TokenStorageService,
               private accountService: AccountService,
               private viewportScroller: ViewportScroller,
               private cartDetailService: CartDetailService,
-              private searchService: SearchService) {
+              private searchService: SearchService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -70,9 +74,10 @@ export class CartComponent implements OnInit {
         this.cartDetailDtos[i].quantity++;
         if (this.cartDetailDtos[i].quantity > this.cartDetailDtos[i].inventoryLevel) {
           Swal.fire({
-            title: 'Thông báo!',
-            text: 'Bạn đã nhập quá số lượng tồn kho - Số lượng tồn kho còn ' + this.cartDetailDtos[i].inventoryLevel,
+            title: 'Notification!',
+            text: 'You have entered an excess amount of inventory - The number of goods in stock ' + this.cartDetailDtos[i].inventoryLevel,
             icon: 'error',
+            confirmButtonColor: 'darkgreen',
             confirmButtonText: 'OK'
           });
           this.cartDetailDtos[i].quantity--;
@@ -115,9 +120,10 @@ export class CartComponent implements OnInit {
   remove(cartDetailId: number, cartId: number, productId: number, productName: string) {
     this.productService.deleteProductByProductIdAndCartId(cartId, productId).subscribe(() => {
         Swal.fire({
-          title: 'Thông báo!',
-          text: 'Bạn vừa bỏ mặt hàng ' + productName,
+          title: 'Notification!',
+          text: 'You just dropped the item ' + productName,
           icon: 'success',
+          confirmButtonColor: 'darkgreen',
           confirmButtonText: 'OK'
         });
         this.productService.findAllCartDetailByAccountId(this.accountId).subscribe(item => {
@@ -139,9 +145,19 @@ export class CartComponent implements OnInit {
   changeQuantity(quantity: number, cartDetailId: number) {
     if (isNaN(quantity)) {
       Swal.fire({
-        title: 'Thông báo!',
-        text: 'Bạn vừa nhập sai định dạng số',
+        title: 'Notification!',
+        text: 'You just entered the wrong number format',
         icon: 'error',
+        confirmButtonColor: 'darkgreen',
+        confirmButtonText: 'OK'
+      });
+      this.ngOnInit();
+    } else if (!Number.isInteger(quantity)) {
+      Swal.fire({
+        title: 'Notification!',
+        text: 'You just entered the wrong integer format',
+        icon: 'error',
+        confirmButtonColor: 'darkgreen',
         confirmButtonText: 'OK'
       });
       this.ngOnInit();
@@ -150,9 +166,10 @@ export class CartComponent implements OnInit {
         if (item.cartDetailId === cartDetailId) {
           if (quantity < 1) {
             Swal.fire({
-              title: 'Thông báo!',
-              text: 'Bạn phải nhập số lớn hơn 1',
+              title: 'Notification!',
+              text: 'You must enter a number greater than 1',
               icon: 'error',
+              confirmButtonColor: 'darkgreen',
               confirmButtonText: 'OK'
             });
             quantity = item.quantity;
@@ -161,12 +178,12 @@ export class CartComponent implements OnInit {
           } else if (quantity > item.inventoryLevel) {
             quantity = item.quantity;
             Swal.fire({
-              title: 'Thông báo!',
-              text: 'Bạn đã nhập quá số lượng tồn kho - Số lượng tồn kho còn ' + item.inventoryLevel,
+              title: 'Notification!',
+              text: 'You have entered an excess amount of inventory - The number of goods in stock ' + item.inventoryLevel,
               icon: 'error',
+              confirmButtonColor: 'darkgreen',
               confirmButtonText: 'OK'
             });
-
             this.ngOnInit();
             break;
           } else {
@@ -181,6 +198,45 @@ export class CartComponent implements OnInit {
           }
         }
       }
+    }
+  }
+
+  routeReceipt() {
+    this.username = this.tokenStorageService.getUser().username;
+    this.accountService.findUserEmail(this.username).subscribe(next => {
+      this.accountId = next?.accountId;
+      this.productService.findAllCartDetailByAccountId(this.accountId).subscribe(item => {
+        this.cartDetailDtos = item;
+        if (this.sum === 0) {
+          this.getTotal();
+        }
+        this.getInventoryLevelBy();
+      });
+    });
+  }
+
+  getInventoryLevelBy() {
+    for (const key of this.cartDetailDtos) {
+      if (key.quantity > key.inventoryLevel) {
+        key.quantity = key.inventoryLevel;
+        this.flag = false;
+        Swal.fire({
+          title: 'Notification!',
+          text: 'You have entered an excess amount of inventory - The number of goods in stock ' + key.inventoryLevel,
+          icon: 'error',
+          confirmButtonColor: 'darkgreen',
+          confirmButtonText: 'OK'
+        });
+
+        this.cartDetailService.updateQuantityOfCartDetailByCartDetailId(key.quantity, key.cartDetailId).subscribe(() => {
+        });
+        break;
+      } else {
+        this.flag = true;
+      }
+    }
+    if (this.flag === true) {
+      this.router.navigateByUrl('/receipt');
     }
   }
 }

@@ -16,6 +16,7 @@ import {FacebookLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from 
 import { CartComponent } from './cart/cart.component';
 import {Http403Interceptor} from './security/http403.interceptor';
 import {ReceiptComponent} from './receipt/receipt.component';
+import { PurchaseHistoryComponent } from './purchase-history/purchase-history.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import {ReceiptComponent} from './receipt/receipt.component';
     ProductComponent,
     DetailComponent,
     CartComponent,
-    ReceiptComponent
+    ReceiptComponent,
+    PurchaseHistoryComponent
   ],
   imports: [
     BrowserModule,

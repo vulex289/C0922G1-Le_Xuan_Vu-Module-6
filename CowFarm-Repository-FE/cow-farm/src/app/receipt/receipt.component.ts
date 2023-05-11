@@ -22,6 +22,7 @@ export class ReceiptComponent implements OnInit {
   cartDetailDtos: ICartDetailDto[];
   sum = 0;
   shippingPay = 5;
+  flag = true;
 
   constructor(private tokenStorageService: TokenStorageService,
               private accountService: AccountService,
@@ -32,7 +33,19 @@ export class ReceiptComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getUser();
+    this.username = this.tokenStorageService.getUser()?.username;
+    this.accountService.findUserEmail(this.username).subscribe(next => {
+      this.user = next;
+      this.productService.findAllCartDetailByAccountId(this.user?.accountId).subscribe(item => {
+        this.cartDetailDtos = item;
+        console.log(this.cartDetailDtos);
+        if (this.sum === 0) {
+          this.getTotal();
+        }
+        this.renderPayPalBtn();
+      });
+    });
+
     this.searchService.getTotal().subscribe(item => {
       this.total = item;
     });
@@ -46,23 +59,27 @@ export class ReceiptComponent implements OnInit {
         value: String(this.total),
         currency: 'USD',
         onApprove: (details) => {
-          this.cartDetailService.deleteAllDetailByAccountId(this.user.accountId).subscribe(() => {
-            this.searchService.setCount(0);
-          });
-          for (const item of this.cartDetailDtos) {
-            this.productService.setInventoryByProduct(item.inventoryLevel - item.quantity, item.productId).subscribe(() => {
+          if (this.flag === true) {
+            this.cartDetailService.deleteAllDetailByAccountId(this.user.accountId).subscribe(() => {
+              this.searchService.setCount(0);
+              this.cartDetailService.addNewPurchaseHistoryByAccountIdAndCartDetailId(this.user.accountId, this.total).subscribe(() => {
+              });
             });
+            for (const item of this.cartDetailDtos) {
+              this.productService.setInventoryByProduct(item.inventoryLevel - item.quantity, item.productId).subscribe(() => {
+              });
+            }
+            Swal.fire({
+              title: 'Notification!',
+              text: 'Payment success!',
+              icon: 'success',
+              confirmButtonColor: 'darkgreen',
+              confirmButtonText: 'OK'
+            });
+            this.route.navigateByUrl('/product');
           }
-          Swal.fire({
-            title: 'Thông báo!',
-            text: 'Payment success!',
-            icon: 'success',
-            confirmButtonText: 'OK'
-          });
-          this.route.navigateByUrl('/product');
         }
-      }
-    );
+      });
   }
 
   getTotal() {
@@ -74,19 +91,19 @@ export class ReceiptComponent implements OnInit {
     this.searchService.setTotal(this.total);
   }
 
-  findAllCartDetailByAccountId(accountId: number) {
-    this.productService.findAllCartDetailByAccountId(accountId).subscribe(item => {
-      this.cartDetailDtos = item;
-      this.getTotal();
-    });
-    this.renderPayPalBtn();
-  }
+  // findAllCartDetailByAccountId(accountId: number) {
+  //   this.productService.findAllCartDetailByAccountId(accountId).subscribe(item => {
+  //     this.cartDetailDtos = item;
+  //     this.getTotal();
+  //   });
+  //
+  // }
 
-  getUser() {
-    this.username = this.tokenStorageService.getUser()?.username;
-    this.accountService.findUserEmail(this.username).subscribe(next => {
-      this.user = next;
-      this.findAllCartDetailByAccountId(next.accountId);
-    });
-  }
+  // getUser() {
+  //   this.username = this.tokenStorageService.getUser()?.username;
+  //   this.accountService.findUserEmail(this.username).subscribe(next => {
+  //     this.user = next;
+  //     this.findAllCartDetailByAccountId(next.accountId);
+  //   });
+  // }
 }

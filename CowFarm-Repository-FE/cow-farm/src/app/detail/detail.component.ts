@@ -84,14 +84,15 @@ export class DetailComponent implements OnInit {
       });
     }, e => {
       if (!this.tokenStorageService.getToken()) {
-        this.showMessageError('Bạn phải đăng nhập vào trang web');
+        this.showMessageError('You need login in web');
         this.route.navigateByUrl('/login');
       }
       if (e.status === 404) {
         Swal.fire({
-          title: 'Thông báo!',
-          text: 'Bạn đã nhập quá số lượng hàng tồn kho',
-          icon: 'success',
+          title: 'Notification!',
+          text: 'You have entered an excess amount of inventory - The number of goods in stock ',
+          icon: 'error',
+          confirmButtonColor: 'darkgreen',
           confirmButtonText: 'OK'
         });
       }
@@ -99,21 +100,12 @@ export class DetailComponent implements OnInit {
     this.route.navigateByUrl('/cart');
   }
 
-
-  showMessageSuccess(message: string) {
-    Swal.fire({
-      title: 'Thông báo!',
-      text: message,
-      icon: 'success',
-      confirmButtonText: 'OK'
-    });
-  }
-
   showMessageError(message: string) {
     Swal.fire({
-      title: 'Thông báo!',
+      title: 'Notification!',
       text: message,
       icon: 'success',
+      confirmButtonColor: 'darkgreen',
       confirmButtonText: 'OK'
     });
   }

@@ -9,6 +9,7 @@ import {CartComponent} from './cart/cart.component';
 import {UserGuard} from './security/user.guard';
 import {AuthGuard} from './security/auth.guard';
 import {ReceiptComponent} from './receipt/receipt.component';
+import {PurchaseHistoryComponent} from './purchase-history/purchase-history.component';
 
 
 const routes: Routes = [
@@ -35,6 +36,11 @@ const routes: Routes = [
     canActivate: [UserGuard],
     path: 'receipt',
     component: ReceiptComponent
+  },
+  {
+    canActivate: [UserGuard],
+    path: 'purchaseHistory',
+    component: PurchaseHistoryComponent
   },
 ];
 

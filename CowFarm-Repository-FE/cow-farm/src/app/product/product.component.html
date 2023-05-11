@@ -24,25 +24,27 @@
     </div>
     </div>
     <div class="row gx-4 mx-5">
-      <div class="col-md-6 col-lg-4 col-xl-3 wow my-3 fadeInUp" data-wow-delay="0.3s"
-           *ngFor="let product of products"
-      >
-        <div class="product-item">
-          <div class="position-relative">
-            <img class="img-fluid img"  src="../../assets/img/{{product.imageList[0]}}" alt="">
-            <div class="product-overlay">
-              <a class="btn btn-square btn-secondary rounded-circle m-1" routerLink=""><i class="bi bi-link"></i></a>
-              <button class="btn btn-square btn-secondary rounded-circle m-1" (click)="addCart(product.productId)"><i class="bi bi-cart"></i></button>
+      <ng-container *ngFor="let product of products">
+        <div class="col-md-6 col-lg-4 col-xl-3 wow my-3 fadeInUp" data-wow-delay="0.3s">
+          <div class="product-item">
+            <div class="position-relative">
+              <img class="img-fluid img" *ngIf="products.length > 3" src="../../assets/img/{{product.imageList[0]}}" alt="">
+              <img class="img-fluid " style="max-width: 100%; height: auto" *ngIf="products.length < 3" src="../../assets/img/{{product.imageList[0]}}" alt="">
+              <div class="product-overlay">
+                <a class="btn btn-square btn-secondary rounded-circle m-1" routerLink=""><i class="bi bi-link"></i></a>
+                <button class="btn btn-square btn-secondary rounded-circle m-1" (click)="addCart(product.productId)"><i class="bi bi-cart"></i></button>
+              </div>
+            </div>
+            <div class="text-center p-4">
+              <a class="d-block h5" routerLink="/product-detail/{{product.productId}}">{{product.productName}}</a>
+              <span class="text-primary me-1">${{product.price}}</span>
+              <span class="text-decoration-line-through">$29.00</span>
             </div>
           </div>
-          <div class="text-center p-4">
-            <a class="d-block h5" routerLink="/product-detail/{{product.productId}}">{{product.productName}}</a>
-            <span class="text-primary me-1">${{product.price}}</span>
-            <span class="text-decoration-line-through">$29.00</span>
-          </div>
         </div>
-      </div>
+      </ng-container>
     </div>
+
   </div>
 </div>
 <!-- Product End -->

@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {interval, Observable} from 'rxjs';
 import {Product} from '../model/product';
 import {CartDetail} from '../model/cart-detail';
 import {ICartDetailDto} from '../dto/icart-detail-dto';
+import {switchMap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +41,10 @@ export class ProductService {
 
   setInventoryByProduct(inventoryLevel: number, productId: number): Observable<any> {
     return this.httpClient.get<any>('http://localhost:8080/api/product-inventory-level/' + inventoryLevel + '/' + productId);
+  }
+
+  getData(accountId: number): Observable<any> {
+    return interval(5000) // Truy vấn định kỳ sau mỗi 5 giây
+      .pipe(switchMap(() => this.httpClient.get<any>('http://localhost:8080/api/cart/' + accountId)));
   }
 }
